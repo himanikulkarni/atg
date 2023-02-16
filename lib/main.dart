@@ -1,5 +1,6 @@
-import 'package:atg_assignment/home.dart';
+import 'package:atg_assignment/presentation/home.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 void main() {
@@ -11,14 +12,21 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-          textTheme: GoogleFonts.poppinsTextTheme(
-        Theme.of(context).textTheme,
-      )),
-      color: Colors.white,
-      debugShowCheckedModeBanner: false,
-      home: const home(),
+    return ScreenUtilInit(
+      designSize: const Size(360, 720),
+      builder: (context, child) {
+        return MaterialApp(
+          theme: ThemeData(
+            textTheme: GoogleFonts.poppinsTextTheme(
+              Theme.of(context).textTheme,
+            ),
+          ),
+          color: Colors.white,
+          debugShowCheckedModeBanner: false,
+          home: child,
+        );
+      },
+      child: const Home(),
     );
   }
 }

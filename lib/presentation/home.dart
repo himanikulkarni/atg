@@ -1,35 +1,34 @@
+//Click programs to get data
+
+import 'package:atg_assignment/model/programs_model.dart';
+import 'package:atg_assignment/presentation/programs_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:http/http.dart' as http;
 
-void main() {
-  runApp(const home());
-}
-
-class home extends StatelessWidget {
-  const home({super.key});
+class Home extends StatefulWidget {
+  const Home({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return ScreenUtilInit(
-      builder: ((context, child) {
-        return MaterialApp(
-          theme: ThemeData(
-            textTheme: GoogleFonts.poppinsTextTheme(
-              Theme.of(context).textTheme,
-            ),
-          ),
-          home: const Home(),
-          debugShowCheckedModeBanner: false,
-        );
-      }),
-    );
-  }
+  State<Home> createState() => _HomeState();
 }
 
-class Home extends StatelessWidget {
-  const Home({super.key});
+class _HomeState extends State<Home> {
+  ProgramsModel? programsModel;
+
+  Future<http.Response> getProgramList() async {
+    final response = await http.get(
+      Uri.parse(
+        "https://632017e19f82827dcf24a655.mockapi.io/api/programs",
+      ),
+    );
+    setState(() {
+      programsModel = programsModelFromJson(response.body);
+    });
+    return response;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -117,39 +116,51 @@ class Home extends StatelessWidget {
                         SizedBox(
                           width: 25.w,
                         ),
-                        Container(
-                          width: 150.w,
-                          height: 45.h,
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                color: Colors.blue,
+                        InkWell(
+                          onTap: () async {
+                            await getProgramList();
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => ProgramsListPage(
+                                    programsModel: programsModel!),
                               ),
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10.0)),
-                          child: Column(
-                            children: [
-                              SizedBox(
-                                height: 10.h,
-                              ),
-                              Row(
-                                children: [
-                                  SizedBox(
-                                    width: 20.w,
-                                  ),
-                                  Image.asset('assets/programs.png'),
-                                  SizedBox(
-                                    width: 15.w,
-                                  ),
-                                  Text(
-                                    'Programs',
-                                    style: GoogleFonts.inter(
-                                        fontSize: 16.sp,
-                                        fontWeight: FontWeight.w500,
-                                        color: Colors.blue),
-                                  ),
-                                ],
-                              ),
-                            ],
+                            );
+                          },
+                          child: Container(
+                            width: 150.w,
+                            height: 45.h,
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Colors.blue,
+                                ),
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(10.0)),
+                            child: Column(
+                              children: [
+                                SizedBox(
+                                  height: 10.h,
+                                ),
+                                Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 20.w,
+                                    ),
+                                    Image.asset('assets/programs.png'),
+                                    SizedBox(
+                                      width: 15.w,
+                                    ),
+                                    Text(
+                                      'Programs',
+                                      style: GoogleFonts.inter(
+                                          fontSize: 16.sp,
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.blue),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                         SizedBox(
@@ -200,39 +211,51 @@ class Home extends StatelessWidget {
                         SizedBox(
                           width: 25.w,
                         ),
-                        Container(
-                          width: 150.w,
-                          height: 45.h,
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                color: Colors.blue,
+                        InkWell(
+                          onTap: () async {
+                            await getProgramList();
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => ProgramsListPage(
+                                    programsModel: programsModel!),
                               ),
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10.0)),
-                          child: Column(
-                            children: [
-                              SizedBox(
-                                height: 10.h,
-                              ),
-                              Row(
-                                children: [
-                                  SizedBox(
-                                    width: 20.w,
-                                  ),
-                                  Image.asset('assets/learn.png'),
-                                  SizedBox(
-                                    width: 15.w,
-                                  ),
-                                  Text(
-                                    'Learn',
-                                    style: GoogleFonts.inter(
-                                        fontSize: 16.sp,
-                                        fontWeight: FontWeight.w500,
-                                        color: Colors.blue),
-                                  ),
-                                ],
-                              ),
-                            ],
+                            );
+                          },
+                          child: Container(
+                            width: 150.w,
+                            height: 45.h,
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Colors.blue,
+                                ),
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(10.0)),
+                            child: Column(
+                              children: [
+                                SizedBox(
+                                  height: 10.h,
+                                ),
+                                Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 20.w,
+                                    ),
+                                    Image.asset('assets/learn.png'),
+                                    SizedBox(
+                                      width: 15.w,
+                                    ),
+                                    Text(
+                                      'Learn',
+                                      style: GoogleFonts.inter(
+                                          fontSize: 16.sp,
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.blue),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                         SizedBox(
