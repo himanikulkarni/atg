@@ -1,32 +1,60 @@
-import 'package:atg_assignment/presentation/home.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'todos.dart';
+import 'todo.dart';
 
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class TodoList extends StatelessWidget {
+  const TodoList({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return ScreenUtilInit(
-      designSize: const Size(360, 720),
-      builder: (context, child) {
-        return MaterialApp(
-          theme: ThemeData(
-            textTheme: GoogleFonts.poppinsTextTheme(
-              Theme.of(context).textTheme,
+    final todos = Provider.of<Todos>(context);
+
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.pink,
+        title: const Text('Todo List'),
+      ),
+      body: ListView.builder(
+        itemCount: todos.todos.length,
+        itemBuilder: (context, index) {
+          final todo = todos.todos[index];
+
+          return ListTile(
+            title: Text(todo.text),
+            trailing: IconButton(
+              icon: const Icon(Icons.delete),
+              onPressed: () {
+                todos.remove(todo);
+              },
             ),
-          ),
-          color: Colors.white,
-          debugShowCheckedModeBanner: false,
-          home: child,
-        );
-      },
-      child: const Home(),
+          );
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.pink,
+        child: const Icon(Icons.add),
+        onPressed: () {
+          final id = todos.todos.length + 1;
+          final todo = Todo(
+            id: id,
+            text: 'Todo $id',
+          );
+
+          todos.add(todo);
+        },
+      ),
     );
   }
+}
+
+void main() {
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => Todos(),
+      child: const MaterialApp(
+        home: TodoList(),
+      ),
+    ),
+  );
 }
